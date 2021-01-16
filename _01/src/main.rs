@@ -8,7 +8,7 @@ use std::io::prelude::*;
 // need an array of number to do out logic of solving this puzzle.
 fn main() -> std::io::Result<()> {
     // Read the file
-    let mut file = File::open("items.txt")?;
+    let mut file = File::open("input.txt")?;
 
     // Contents of the file
     let mut contents = String::new();
