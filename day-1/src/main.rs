@@ -7,11 +7,11 @@ use std::io::prelude::*;
 // read the file and generate an array of numbers from the file so that we
 // need an array of number to do out logic of solving this puzzle.
 fn main() -> std::io::Result<()> {
-    // Read the file
+    // File handler to read the input from the file
     let mut file = File::open("input.txt")?;
 
-    // Contents of the file
-    let mut contents = String::new();
+    // Buffer to store the input text
+    let mut input = String::new();
 
     // We will store those numbers in this vector
     let mut array_of_num: Vec<i32> = vec![];
@@ -21,10 +21,10 @@ fn main() -> std::io::Result<()> {
     let mut num = String::from("");
 
     // Read the file and store the content
-    file.read_to_string(&mut contents)?;
+    file.read_to_string(&mut input)?;
 
     // Iterator over the contents character by character
-    for (_index, char) in contents.chars().enumerate() {
+    for char in input.chars() {
         if char == '\n' {
             // We convert the string of numbers in `num` to i32 so that we can
             // push it to `array_of_num`
@@ -56,7 +56,7 @@ fn main() -> std::io::Result<()> {
         }
     }
 
-    println!("The answer to 1st puzzle is: {}", multiplied_val);
+    println!("The answer to 1st puzzle is: {}", multiplied_val); // 987339
 
     // Iterate over the array of numbers and find those 3 numbers that sum to
     // `2020` and then we multiply those 3 numbers and that would be our
@@ -72,7 +72,7 @@ fn main() -> std::io::Result<()> {
         }
     }
 
-    println!("The answer to 2nd puzzle is: {}", multiplied_val);
+    println!("The answer to 2nd puzzle is: {}", multiplied_val); // 259521570
 
     Ok(())
 }

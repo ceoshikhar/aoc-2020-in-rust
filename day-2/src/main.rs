@@ -4,28 +4,27 @@ use std::io::Read;
 use std::collections::HashMap;
 
 fn main() -> io::Result<()> {
-    // File handler to read from the input
+    // File handler to read the input from the file
     let mut file = File::open("input.txt")?;
 
-    // Buffer to store the input
+    // Buffer to store the input text
     let mut input = String::new();
 
-    // Read the input from the file and store it in the `contents` buffer string
+    // Read the input from the file and store it in the `input` buffer string
     file.read_to_string(&mut input)?;
 
-    // The input that is given to us to solve the puzzle is a simple string
-    // in a form on very long string. To get to solving our puzzle we have to
+    // The input that is given to us to solve the puzzle is a simple data
+    // in a form on very long string. To start solving our puzzle we have to
     // first parse this input and form a Hash Map, the data structure which
-    // makes sense to me and will help us start actually solving the puzzle.
-    let input_hash_map: HashMap<usize, Password> = parse_input_to_hash_map(&input);
+    // makes sense to me and will help us to actually start solving the puzzle.
+    let input_hash_map: HashMap<usize, Password> = input_to_hash_map(&input);
     let solution: usize = solve_puzzle(&input_hash_map);
-    println!("The answer to 1st puzzel is: {}", &solution);
+    println!("The answer to 1st puzzle is: {}", &solution); // 548
 
     Ok(())
 }
 
 // The password and the policy that was in effect when the password was created
-#[derive(Debug)]
 struct Password {
     // Minimum number of times the `letter` must be present in the `password`
     min_count:  u8,
@@ -53,25 +52,25 @@ impl Password {
 }
 
 // Generate the hash map from the raw input
-fn parse_input_to_hash_map(input: &str) -> HashMap<usize, Password> {
+fn input_to_hash_map(input: &str) -> HashMap<usize, Password> {
     // We will parse the input and store the data in this hash map
     let mut hash_map: HashMap<usize, Password> = HashMap::new();
 
     // The key for every record in our hash map, which we increment after
     // we insert a record
-    let mut key: usize      = 0;
-
-    let mut min_count: u8   = 0;
-    let mut max_count: u8   = 0;
-    let mut letter: char    = ' ';
-    let mut password        = String::new();
+    let mut key         = 0;
+    let mut min_count   = 0;
+    let mut max_count   = 0;
+    let mut letter      = ' ';
+    let mut password    = String::new();
 
     // Split the input into lines
     for line in input.lines() {
-        // Split each line by white space and put the items for each line in
-        // a vector.
+        // Split the lien by white space (' ') and put the items for each
+        // line in a vector.
         //
-        // This vector now has 3 key components for every record:
+        // This vector now has 3 items which help us find the following values
+        // for every record:
         //  - password
         //  - letter
         //  - min_count
@@ -84,7 +83,7 @@ fn parse_input_to_hash_map(input: &str) -> HashMap<usize, Password> {
 
         // We now need to just extract our data from each vector so that we can
         // form our Password instance and insert it in the `hash_map`. We start
-        // by iterating of the items in the vector `line_items`
+        // by iterating over the items in the vector `line_items`
         for item in line_items {
             // From the sample `line_items` shown above we know our min and max
             // count values are in the item which contains '-'
@@ -111,18 +110,18 @@ fn parse_input_to_hash_map(input: &str) -> HashMap<usize, Password> {
     hash_map
 }
 
-// Find the number of password that are valid according to their policies
+// Find the number of passwords that are valid according to their policies
 fn solve_puzzle(hash_map: &HashMap<usize, Password>) -> usize {
     let mut num_of_correct_passwords = 0;
 
     for val in hash_map.values() {
-        // Num of times the `Password.letter` in appears in `Password.password`
+        // Num of times the `Password.letter` appears in `Password.password`
         let mut num_of_times_letter_appears = 0;
 
         // Iterate over the `Password.password` char by char
         for letter in val.password.chars() {
             // If the current char in `Password.password` is same as
-            // `Password.letter` we save the count of how many times
+            // `Password.letter` and we save the count of how many times
             // this appears to be true by incrementing
             // `num_of_times_letter_appaears`
             if letter == val.letter {
@@ -131,12 +130,12 @@ fn solve_puzzle(hash_map: &HashMap<usize, Password>) -> usize {
         }
 
         // Once we have iterated over the `Password.password` value, we check
-        // if the number of occurrences of `Password.letter` is between
-        // `Password.min_count` and `Password.max_count` inclusive of the range
-        // or not. If it is then we increment the value of
-        // `num_of_correct_passwords` as this is the check which tells us if the
-        // `Password.password` is valid according to the password policy set for
-        // that password.
+        // if the number of occurrences of `Password.letter` is between and
+        // including `Password.min_count` and `Password.max_count` or not.
+        //
+        // If the above check is true, we increment `num_of_correct_passwords`
+        // as this is the check which tells us if the `Password.password` is
+        // valid according to the password policy set for that password.
         if num_of_times_letter_appears >= val.min_count
                 && num_of_times_letter_appears <= val.max_count {
             num_of_correct_passwords += 1;
