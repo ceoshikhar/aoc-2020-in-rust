@@ -132,7 +132,7 @@ fn solve_puzzle(hash_map: &HashMap<usize, Password>) -> usize {
 
         // Once we have iterated over the `Password.password` value, we check
         // if the number of occurrences of `Password.letter` is between
-        // `Password.min_count` and `Password.max_count` inclusive of the range 
+        // `Password.min_count` and `Password.max_count` inclusive of the range
         // or not. If it is then we increment the value of
         // `num_of_correct_passwords` as this is the check which tells us if the
         // `Password.password` is valid according to the password policy set for
